@@ -1,9 +1,11 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { createStream } from '../../actions';
 //field is a class while redux form is a function that does the connect portion
 class StreamCreate extends React.Component{
 
-  renderError({error,touched}){
+  renderError=({error,touched})=>{
     if(touched && error){
       return(
         <div className="ui error message">
@@ -25,8 +27,8 @@ class StreamCreate extends React.Component{
     );
   }
 
-  onSubmit(formValues){
-
+  onSubmit = (formValues)=> {
+    this.props.createStream(formValues);
   }
 
   render(){
@@ -58,7 +60,11 @@ const validate = (formValues)=>{
     return errors;
 }
 
-export default reduxForm({
+const formWrapped =  reduxForm({
   form: 'streamCreate',
   validate
 })(StreamCreate); 
+
+export default connect(null, {
+  createStream
+})(formWrapped);
